@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function TodoList({ todos, removeTodo }) {
+function TodoList({ todos, removeTodo, toggleComplete }) {
     const [fadeInClass, setFadeInClass] = useState([]);
     const [fadeOutClass, setFadeOutClass] = useState([]);
 
@@ -16,14 +16,25 @@ function TodoList({ todos, removeTodo }) {
 
         setTimeout(() => {
             removeTodo(index);
-        }, 500); // Match the duration of the fade-out animation
+        }, 1500); // Match the duration of the fade-out animation
     };
 
     return (
         <ul>
             {todos.map((todo, index) => (
                 <li key={index} className={`${fadeInClass[index]} ${fadeOutClass[index]}`}>
-                    {todo}
+                    <div>
+                        <input
+                            type="checkbox"
+                            checked={todo.completed}
+                            onChange={() => toggleComplete(index)}
+                        />
+                        <strong style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                            {todo.text}
+                        </strong>
+                        <div>Category: {todo.category}</div>
+                        <div>Due: {todo.dueDate}</div>
+                    </div>
                     <button onClick={() => handleRemove(index)}>Remove</button>
                 </li>
             ))}
